@@ -4,10 +4,12 @@
 ```bash
 sudo apt-get install vim-nox
 git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+sudo apt-get install exuberant-ctags
+cd .vim/bundle/vimproc.vim && make
 ```
 ## Color
-```
-git clone https://github.com/seebi/dircolors-solarized .dircolors
+```bash
+wget --no-check-certificate https://raw.github.com/seebi/dircolors-solarized/master/dircolors.ansi-dark && mv dircolors.ansi-dark .dircolors
 ```
 
 ## Percol
@@ -27,3 +29,4 @@ cd /usr/local && sudo tar --strip-components 1 -zxf ~/node.tar.gz
 # Reference
 
 [More](https://gist.github.com/72d8255ce2d90e568571)
+[Ubuntu dircolors](http://www.webupd8.org/2011/04/solarized-must-have-color-paletter-for.html)
