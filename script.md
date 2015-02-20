@@ -3,6 +3,10 @@
 ## Vim
 ```bash
 sudo apt-get install vim-nox
+git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+```
+## Color
+```
 git clone https://github.com/seebi/dircolors-solarized .dircolors
 ```
 
