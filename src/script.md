@@ -7,6 +7,12 @@ git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 sudo apt-get install exuberant-ctags
 cd .vim/bundle/vimproc.vim && make
 ```
+
+## fasd
+```bash
+git clone http://github.com/clvv/fasd.git && cd fasd && sudo make install
+```
+
 ## Color
 ```bash
 wget --no-check-certificate https://raw.github.com/seebi/dircolors-solarized/master/dircolors.ansi-dark && mv dircolors.ansi-dark .dircolors
