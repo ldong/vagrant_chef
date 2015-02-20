@@ -25,6 +25,8 @@ Vagrant.configure("2") do |config|
     chef.add_recipe 'redis'
     chef.add_recipe 'python'
     chef.add_recipe 'git'
+    chef.add_recipe 'zsh'
+    chef.add_recipe 'oh-my-zsh'
     chef.json = {
       :postgresql => {
         :config   => {
@@ -71,22 +73,22 @@ Vagrant.configure("2") do |config|
         ]
       },
       :redis      => {
-        :bind        => "127.0.0.1",
-        :port        => "6379",
-        :config_path => "/etc/redis/redis.conf",
-        :daemonize   => "yes",
-        :timeout     => "300",
-        :loglevel    => "notice"
+          :bind        => "127.0.0.1",
+          :port        => "6379",
+          :config_path => "/etc/redis/redis.conf",
+          :daemonize   => "yes",
+          :timeout     => "300",
+          :loglevel    => "notice"
       },
       :git        => {
-        :prefix => "/usr/local"
+          :prefix => "/usr/local"
       },
       :oh_my_zsh => {
-        :users => [{
-          :login => 'vagrant',
-          :theme => 'robbyrussell',
-          :plugins => %w{git rails ruby rvm virtualenv vagrant}
-        }]
+          :users => [{
+              :login => 'vagrant',
+              :theme => 'robbyrussell',
+              :plugins => %w{git rails ruby rvm virtualenv vagrant}
+          }]
       }
     }
   end
