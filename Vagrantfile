@@ -1,102 +1,33 @@
-# encoding: utf-8
-# This file originally created at http://rove.io/8376b3aed0fa12746c0460f1f4d602af
-
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
+file_location = '~/VMs/src'
+
 Vagrant.configure("2") do |config|
+  # All Vagrant configuration is done here. The most common configuration
+  # options are documented and commented below. For a complete reference,
+  # please see the online documentation at vagrantup.com.
 
-  file_location = '~/VMs/src'
-
-  config.vm.box = "opscode-ubuntu-12.04_chef-11.4.0"
-  config.vm.box_url = "https://opscode-vm-bento.s3.amazonaws.com/vagrant/opscode_ubuntu-12.04_chef-11.4.0.box"
-  config.ssh.forward_agent = true
+  # Every Vagrant virtual environment requires a box to build off of.
+  config.vm.box = "ubuntu_on_rails"
+  config.vm.box_url = 'https://dl.dropboxusercontent.com/s/p5wqxl56ckvw03q/ubuntu12.04_chef_rails4.box'
 
   config.vm.synced_folder file_location, "/home/vagrant/src"
   config.vm.synced_folder "~", "/vagrant", disabled: true
 
+  config.vm.network :forwarded_port, guest: 8000, host: 9000
+  config.vm.network :forwarded_port, guest: 8001, host: 9001
+  config.vm.network :forwarded_port, guest: 8080, host: 9080
+  config.vm.network :forwarded_port, guest: 8081, host: 9081
+  config.vm.network :forwarded_port, guest: 8888, host: 9888
   config.vm.network :forwarded_port, guest: 3000, host: 3000
-  config.vm.network :forwarded_port, guest: 8000, host: 8000
-  config.vm.network :forwarded_port, guest: 8080, host: 8080
 
-  config.vm.provision :chef_solo do |chef|
-    chef.cookbooks_path = ["cookbooks"]
-    chef.add_recipe :apt
-    chef.add_recipe 'tmux'
-    chef.add_recipe 'postgresql::server'
-    chef.add_recipe 'vim'
-    chef.add_recipe 'sqlite'
-    chef.add_recipe 'nodejs'
-    chef.add_recipe 'ruby_build'
-    chef.add_recipe 'rbenv::user'
-    chef.add_recipe 'redis'
-    chef.add_recipe 'python'
-    chef.add_recipe 'git'
-    chef.add_recipe 'zsh'
-    chef.add_recipe 'oh-my-zsh'
-    chef.json = {
-      :postgresql => {
-        :config   => {
-          :listen_addresses => "*",
-          :port             => "5432"
-        },
-        :pg_hba   => [
-          {
-            :type   => "local",
-            :db     => "postgres",
-            :user   => "postgres",
-            :addr   => nil,
-            :method => "trust"
-          },
-          {
-            :type   => "host",
-            :db     => "all",
-            :user   => "all",
-            :addr   => "0.0.0.0/0",
-            :method => "md5"
-          },
-          {
-            :type   => "host",
-            :db     => "all",
-            :user   => "all",
-            :addr   => "::1/0",
-            :method => "md5"
-          }
-        ],
-        :password => {
-          :postgres => "password"
-        }
-      },
-      :rbenv      => {
-        :user_installs => [
-          {
-            :user   => "vagrant",
-            :rubies => [
-              "1.9.3-p484",
-              "2.0.0-p353"
-            ],
-            :global => "2.0.0-p353"
-          }
-        ]
-      },
-      :redis      => {
-          :bind        => "127.0.0.1",
-          :port        => "6379",
-          :config_path => "/etc/redis/redis.conf",
-          :daemonize   => "yes",
-          :timeout     => "300",
-          :loglevel    => "notice"
-      },
-      :git        => {
-          :prefix => "/usr/local"
-      },
-      :oh_my_zsh => {
-          :users => [{
-              :login => 'vagrant',
-              :theme => 'robbyrussell',
-              :plugins => %w{git rails ruby rvm virtualenv vagrant}
-          }]
-      }
-    }
+  # enable X11
+  # config.ssh.forward_x11 = true
+
+  config.vm.provider :virtualbox do |vb|
+    vb.customize [ "modifyvm", :id, "--memory", 2048 ]
+    vb.customize [ "modifyvm", :id, "--natdnshostresolver1", "on" ]
+    vb.customize [ "setextradata", :id, "VBoxInternal2/SharedFoldersEnableSymlinksCreate/v-src", "1"]
   end
 end
