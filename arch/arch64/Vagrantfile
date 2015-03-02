@@ -1,0 +1,29 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+file_location = '~/VMs/src'
+
+Vagrant.configure("2") do |config|
+  # All Vagrant configuration is done here. The most common configuration
+  # options are documented and commented below. For a complete reference,
+  # please see the online documentation at vagrantup.com.
+
+  # Every Vagrant virtual environment requires a box to build off of.
+  config.vm.box = "Arch64"
+  config.vm.box_url = 'https://dl.dropboxusercontent.com/u/6750592/Arch_Linux_2013.11_x64.box'
+
+  config.vm.synced_folder file_location, "/home/vagrant/src"
+  config.vm.synced_folder "~", "/vagrant", disabled: true
+
+  config.vm.network :forwarded_port, guest: 8080, host: 8080
+  config.vm.network :forwarded_port, guest: 8081, host: 8081
+
+  # enable X11
+  # config.ssh.forward_x11 = true
+
+  config.vm.provider :virtualbox do |vb|
+    vb.customize [ "modifyvm", :id, "--memory", 2048 ]
+    vb.customize [ "modifyvm", :id, "--natdnshostresolver1", "on" ]
+    vb.customize [ "setextradata", :id, "VBoxInternal2/SharedFoldersEnableSymlinksCreate/v-src", "1"]
+  end
+end
